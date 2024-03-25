@@ -5,26 +5,8 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 pup.use(StealthPlugin())
 const {executablePath} =require("puppeteer")
 async function run(input) {
-    if (input=="random") {
-        //click event is not working so quick fix for some time 
-        // const browser = await pup.launch({headless:true,executablePath:executablePath()})
-        // const page = await browser.newPage()
-        // await page.goto("https://leetcode.com/problemset/")
-        // await new Promise(resolve => setTimeout(resolve, 3000));
-        // await page.click("#__next > div:nth-child(2) > div:nth-child(4) > div:nth-child(2) > div:nth-child(1)> div:nth-child(4)> div:nth-child(1) > div:nth-child(1)> div:nth-child(5)> div:nth-child(3) >span:nth-child(2)");
-        
-        // await new Promise(resolve => setTimeout(resolve, 5999));
-        // await page.screenshot({ 
-        //     path: 'fullpage.png', // path where to save the screenshot
-        //     fullPage: true // capture full page
-        // });
-        const randomNumber = Math.floor(Math.random() * 3072) + 1;
-        return await run(randomNumber)
-        
-        // await browser.close()
-         
-    }
-    else if (input == "daily") {
+    try{
+        if (input == "daily") {
         const browser = await pup.launch({headless:true,executablePath:executablePath()})
         const page = await browser.newPage()
         await page.goto("https://leetcode.com/problemset/")
@@ -41,7 +23,12 @@ async function run(input) {
             localStorage.setItem('dynamicIdeLayoutGuide', 'true');
             localStorage.setItem('used-dynamic-layout', 'true');
         });
-        await page.goto("https://leetcode.com" + href);
+            if(href!=null){
+                await page.goto("https://leetcode.com" + href);
+            }else{
+                return "error occured url is null(blocked by leetcode)"
+            }
+                
         console.log("https://leetcode.com" + href)
         await new Promise(resolve => setTimeout(resolve, 3000));
         const content = await page.evaluate(() => {
@@ -58,9 +45,11 @@ async function run(input) {
         });
 
         
-
+        // console.log(content)
+        if(content==""){
+            return "some error occured content is ' ' "
+        }
         await browser.close()
-        console.log(content)
         return content
 
     } else if (Number.isInteger(input)) {
@@ -84,8 +73,13 @@ async function run(input) {
             localStorage.setItem('dynamicIdeLayoutGuide', 'true');
             localStorage.setItem('used-dynamic-layout', 'true');
         });
+
+            if(href!=null){
+                await page.goto("https://leetcode.com" +href)
+            }else{
+                return  "error occured url is null(blocked by leetcode)"
+            }
         
-        await page.goto("https://leetcode.com" +href)
         await new Promise(resolve => setTimeout(resolve, 3000));
 
         
@@ -121,9 +115,15 @@ async function run(input) {
         
 
         await browser.close()
-        console.log(content)
+        //console.log(content)
+        if(content==""){
+            return "some error occured content is ' ' "
+        }
         return content
     
     }
+    }catch{
+        return "some unrecognized error occured in server"
+    }  
 }
 module.exports = {run}
