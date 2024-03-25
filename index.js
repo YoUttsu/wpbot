@@ -20,8 +20,7 @@ client.on('message', async (message) => {
         await message.reply(content)
     }else if(message.body==="/lc random"){
         const randomNumber = Math.floor(Math.random() * 3072) + 1;
-        return await run(randomNumber)
-        await message.reply("getting random question with id"+randomNumber)
+        await message.reply("getting random question with id "+randomNumber)
         let content = await run(randomNumber)
         await message.reply(content)
     }

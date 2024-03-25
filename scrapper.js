@@ -19,10 +19,7 @@ async function run(input) {
             const anchor = document.querySelector("#__next > div:nth-child(2) > div:nth-child(4) > div:nth-child(2) > div:nth-child(1) > div:nth-child(4) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > a");
             return anchor ? anchor.getAttribute('href') : null;
         });
-        await page.evaluate(() => {
-            localStorage.setItem('dynamicIdeLayoutGuide', 'true');
-            localStorage.setItem('used-dynamic-layout', 'true');
-        });
+        
             if(href!=null){
                 await page.goto("https://leetcode.com" + href);
             }else{
@@ -57,6 +54,10 @@ async function run(input) {
         const page = await browser.newPage()
         await page.goto("https://leetcode.com/problemset/")
         await new Promise(resolve => setTimeout(resolve, 3000));
+        await page.evaluate(() => {
+            localStorage.setItem('dynamicIdeLayoutGuide', 'true');
+            localStorage.setItem('used-dynamic-layout', 'true');
+        });
         await page.type("#__next > div:nth-child(2) > div:nth-child(4) > div:nth-child(2) > div:nth-child(1)> div:nth-child(4)> div:nth-child(1) > div:nth-child(1)> div:nth-child(5)> div:nth-child(1)> div:nth-child(1)>input",String(input))
         await new Promise(resolve => setTimeout(resolve, 3000));
         const href = await page.evaluate(() => {
@@ -69,10 +70,7 @@ async function run(input) {
         // });
     
         console.log("https://leetcode.com" +href)
-        await page.evaluate(() => {
-            localStorage.setItem('dynamicIdeLayoutGuide', 'true');
-            localStorage.setItem('used-dynamic-layout', 'true');
-        });
+       
 
             if(href!=null){
                 await page.goto("https://leetcode.com" +href)
@@ -116,8 +114,8 @@ async function run(input) {
 
         await browser.close()
         //console.log(content)
-        if(content==""){
-            return "some error occured content is ' ' "
+        if(/^\s*$/.test(content)){
+            return "some error occured content is ' ' it may be because bot can't scrap premium"
         }
         return content
     
