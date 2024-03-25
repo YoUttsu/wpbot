@@ -19,8 +19,10 @@ client.on('message', async (message) => {
         let content =await run("daily")
         await message.reply(content)
     }else if(message.body==="/lc random"){
-        await message.reply("getting random question")
-        let content = await run("random")
+        const randomNumber = Math.floor(Math.random() * 3072) + 1;
+        return await run(randomNumber)
+        await message.reply("getting random question with id"+randomNumber)
+        let content = await run(randomNumber)
         await message.reply(content)
     }
     // Check if the message matches the regex
