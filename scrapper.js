@@ -54,10 +54,7 @@ async function run(input) {
         const page = await browser.newPage()
         await page.goto("https://leetcode.com/problemset/")
         await new Promise(resolve => setTimeout(resolve, 3000));
-        await page.evaluate(() => {
-            localStorage.setItem('dynamicIdeLayoutGuide', 'true');
-            localStorage.setItem('used-dynamic-layout', 'true');
-        });
+       
         await page.type("#__next > div:nth-child(2) > div:nth-child(4) > div:nth-child(2) > div:nth-child(1)> div:nth-child(4)> div:nth-child(1) > div:nth-child(1)> div:nth-child(5)> div:nth-child(1)> div:nth-child(1)>input",String(input))
         await new Promise(resolve => setTimeout(resolve, 3000));
         const href = await page.evaluate(() => {
@@ -71,7 +68,10 @@ async function run(input) {
     
         console.log("https://leetcode.com" +href)
        
-
+        await page.evaluate(() => {
+            localStorage.setItem('dynamicIdeLayoutGuide', 'true');
+            localStorage.setItem('used-dynamic-layout', 'true');
+        });
             if(href!=null){
                 await page.goto("https://leetcode.com" +href)
             }else{
